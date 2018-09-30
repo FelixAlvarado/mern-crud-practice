@@ -4,12 +4,19 @@ let parser = require('body-parser');
 let cors = require('cors');
 let mongoose = require('mongoose');
 let keys = require('./keys.js');
+let {Schema} = require('mongoose');
 
+let peopleSchema = new Schema({name:{type:String, trim: true}, city:{type:String, trim: true}});
+
+let People = mongoose.model('people', peopleSchema);
 app.use(parser.json());
 
-// app.use(cors());
+app.use(cors());
 
-app.use(express.static('./public'));
+// app.use(express.static('./public'));
+
+
+
 
 mongoose.connect(keys.mongourl);
 
@@ -18,12 +25,13 @@ let people = [{name:'Ed', city: 'San Francisco'},
 {name: 'Wolfie', city: 'Redwood City'}];
 
 app.get('/people',(req, res)=>{
-    res.send(people);
+    People.find({}).then(data => res.send(data));
 });
 
 app.post('/save', (req,res)=>{
-    people.push(req.body);
-    res.send(people);
+    People.create(req.body).then(() =>{
+        People.find({}).then(data => res.send(data));
+    });
 });
 
 app.delete('/delete/:idx', (req,res) => {
