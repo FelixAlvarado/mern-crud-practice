@@ -17,7 +17,7 @@ app.use(cors());
 
 
 
-
+//connects to mlab
 mongoose.connect(keys.mongourl);
 
 let people = [{name:'Ed', city: 'San Francisco'},
