@@ -38,6 +38,7 @@ app.delete('/delete/:idx', (req,res) => {
     let index = req.params.idx;
     let length = people.length;
     console.log('people before', people);
+    //modifying deletion. not working for some reason
     people = people.slice(0, index).concat(people.slice(index + 1, length));
     console.log('people after', people);
     res.send(people);
